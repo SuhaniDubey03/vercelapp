@@ -1,19 +1,15 @@
-import csv
+import json
 from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse
 import os
 
 app = FastAPI()
 
-# Read the CSV file and load data
+# Read the JSON file and load data
 def load_marks():
-    marks_data = {}
-    file_path = os.path.join(os.path.dirname(__file__), "../marks.csv")
+    file_path = os.path.join(os.path.dirname(__file__), "../marks.json")
     with open(file_path, "r") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            marks_data[row["name"]] = int(row["marks"])
-    return marks_data
+        return json.load(f)
 
 marks = load_marks()
 
