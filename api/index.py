@@ -10,6 +10,15 @@ def load_data():
 
 # Handler class to process incoming requests
 class handler(BaseHTTPRequestHandler):
+
+    def do_OPTIONS(self):
+        """Handle preflight CORS requests."""
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.end_headers()
+
     def do_GET(self):
         # Parse the query parameters
         query = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query)
@@ -31,7 +40,9 @@ class handler(BaseHTTPRequestHandler):
         # Send the response header
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
-        self.send_header('Access-Control-Allow-Origin', '*')  # Enable CORS for any origin
+        self.send_header('Access-Control-Allow-Origin', '*')  # Enable CORS
+        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS')  # Allow methods
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')  # Allow headers
         self.end_headers()
 
         # Send the JSON response
